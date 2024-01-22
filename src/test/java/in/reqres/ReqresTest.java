@@ -1,12 +1,20 @@
 package in.reqres;
 
+import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class ReqresTest {
+
+    @BeforeAll
+    static void setUp() {
+        RestAssured.baseURI = "https://reqres.in";
+        RestAssured.basePath = "/api";
+    }
 
     //1
     @Test
@@ -23,7 +31,7 @@ public class ReqresTest {
                 .log().uri()
                 .log().body()
                 .when()
-                .post("https://reqres.in/api/users")
+                .post("/users")
                 .then()
                 .log().all()
                 .statusCode(201)
@@ -46,7 +54,7 @@ public class ReqresTest {
                 .contentType(ContentType.JSON)
                 .log().uri()
                 .log().body()
-                .post("https://reqres.in/api/users")
+                .post("/users")
                 .then()
                 .log().all()
                 .statusCode(400);
@@ -61,7 +69,7 @@ public class ReqresTest {
         given()
                 .log().uri()
                 .when()
-                .delete("https://reqres.in/api/users/" + userId)
+                .delete("/users/" + userId)
                 .then()
                 .statusCode(204);
     }
@@ -81,7 +89,7 @@ public class ReqresTest {
                 .log().uri()
                 .log().body()
                 .when()
-                .post("https://reqres.in/api/register")
+                .post("/register")
                 .then()
                 .log().all()
                 .statusCode(400)
@@ -95,7 +103,7 @@ public class ReqresTest {
         given()
                 .log().uri()
                 .when()
-                .get("https://reqres.in/api/users?page=1")
+                .get("/users?page=1")
                 .then()
                 .log().all()
                 .statusCode(200)
